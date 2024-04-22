@@ -22,7 +22,10 @@ func TestMain(t *testing.T) {
 }
 
 type res struct {
-	Data []string `json:"data"`
+	Data   []string `json:"data"`
+	Person struct {
+		Name string `json:"name"`
+	} `json:"person"`
 }
 
 func TestArray(t *testing.T) {
@@ -38,6 +41,10 @@ func TestArray(t *testing.T) {
 
 	if buffor.Data[0] != "gg" {
 		t.Errorf("Data is wrong. \n Data: %s", buffor)
+	}
+
+	if buffor.Person.Name != "Antek" {
+		t.Error("Name is wrong")
 	}
 
 }
