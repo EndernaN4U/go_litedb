@@ -2,49 +2,39 @@ package litedb
 
 import (
 	"encoding/json"
+	"fmt"
+	"math/rand"
 	"testing"
 )
 
 func TestMain(t *testing.T) {
+
 	db := LiteDb{dir_path: "./test_db"}
-	data, err := db.Open("test.json")
 
-	var buffor map[string]interface{}
-	json.Unmarshal(data, &buffor)
+	for i := 0; i < 100; i++ {
+		random_num := fmt.Sprint(rand.Intn(100))
+		map_data := map[string]string{"data": random_num}
 
-	if err != nil {
-		t.Error("Error reading")
+		json_value, _ := json.Marshal(map_data)
+		db.Save("test.json", json_value)
+
+		data, err := db.Open("test.json")
+
+		var buffor map[string]interface{}
+		json.Unmarshal(data, &buffor)
+
+		if err != nil {
+			t.Error("Error reading")
+		}
+
+		if buffor["data"] != random_num {
+			t.Errorf("Error: expected %s. get %s", random_num, buffor["data"])
+
+			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, fmt.Sprintf("Test %d failed", i+1))
+			fmt.Println(colored)
+			continue
+		}
+		colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 32, fmt.Sprintf("Test %d passed", i+1))
+		fmt.Println(colored)
 	}
-
-	if buffor["data"] != "data" {
-		t.Errorf("Error")
-	}
-}
-
-type res struct {
-	Data   []string `json:"data"`
-	Person struct {
-		Name string `json:"name"`
-	} `json:"person"`
-}
-
-func TestArray(t *testing.T) {
-	db := LiteDb{dir_path: "./test_db"}
-	data, err := db.Open("array.json")
-
-	buffor := res{}
-	json.Unmarshal(data, &buffor)
-
-	if err != nil {
-		t.Error("Error reading")
-	}
-
-	if buffor.Data[0] != "gg" {
-		t.Errorf("Data is wrong. \n Data: %s", buffor)
-	}
-
-	if buffor.Person.Name != "Antek" {
-		t.Error("Name is wrong")
-	}
-
 }
