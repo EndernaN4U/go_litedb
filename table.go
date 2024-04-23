@@ -40,6 +40,19 @@ func (tab *table) Doc(id int) []byte {
 	return data
 }
 
+func (tab *table) Docs() []int {
+	dirs := ReadDir(tab.path)
+	ids := []int{}
+
+	for _, dir := range dirs {
+		dir = dir[1 : len(dir)-1]
+		dir_ind, _ := strconv.Atoi(dir)
+		ids = append(ids, dir_ind)
+	}
+
+	return ids
+}
+
 func (tab *table) MaxIndex() int {
 	dirs := ReadDir(tab.path)
 	max_ind := -1
