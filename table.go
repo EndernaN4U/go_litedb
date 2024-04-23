@@ -3,6 +3,7 @@ package litedb
 import (
 	"fmt"
 	"path/filepath"
+	"strconv"
 )
 
 type table struct {
@@ -10,13 +11,17 @@ type table struct {
 }
 
 func (tab *table) NewDoc(data []byte) int {
-	id := "[0]"
+	new_id := tab.MaxIndex() + 1
+	id := fmt.Sprintf("[%d]", new_id)
+
 	SaveFile(filepath.Join(tab.path, id), data)
-	return 0
+
+	return new_id
 }
 
 func (tab *table) UpdateDoc(id int, data []byte) {
 	sid := fmt.Sprintf("[%d]", id)
+
 	SaveFile(filepath.Join(tab.path, sid), data)
 }
 
@@ -26,4 +31,19 @@ func (tab *table) Doc(id int) []byte {
 		return nil
 	}
 	return data
+}
+
+func (tab *table) MaxIndex() int {
+	dirs := ReadDir(tab.path)
+	max_ind := -1
+
+	for _, dir := range dirs {
+		dir = dir[1 : len(dir)-1]
+		dir_ind, _ := strconv.Atoi(dir)
+		if dir_ind > max_ind {
+			max_ind = dir_ind
+		}
+	}
+
+	return max_ind
 }
