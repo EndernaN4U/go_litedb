@@ -2,6 +2,7 @@ package litedb
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strconv"
 )
@@ -23,6 +24,12 @@ func (tab *table) UpdateDoc(id int, data []byte) {
 	sid := fmt.Sprintf("[%d]", id)
 
 	SaveFile(filepath.Join(tab.path, sid), data)
+}
+
+func (tab *table) DeleteDoc(id int) {
+	sid := fmt.Sprintf("[%d]", id)
+
+	os.Remove(filepath.Join(tab.path, sid))
 }
 
 func (tab *table) Doc(id int) []byte {
