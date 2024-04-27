@@ -1,3 +1,3 @@
 module github.com/EndernaN4U/go_litedb
 
-go 1.21.1
+go 1.21
