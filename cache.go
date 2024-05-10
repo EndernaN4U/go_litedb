@@ -33,7 +33,7 @@ func createCacheFile(table_path string, tab_name string) {
 	SaveFile(cache_path, json_cache)
 }
 
-func cacheData(tab table) Cache {
+func (tab table) cacheData() Cache {
 	cache_path := filepath.Join(tab.path, cache_file_name)
 
 	cache_data, _ := OpenFile(cache_path)
@@ -41,7 +41,7 @@ func cacheData(tab table) Cache {
 	return BytesToJson[Cache](cache_data)
 }
 
-func cacheUpdate(tab table, data Cache) {
+func (tab table) cacheUpdate(data Cache) {
 	cache_path := filepath.Join(tab.path, cache_file_name)
 	json_cache, _ := json.Marshal(data)
 

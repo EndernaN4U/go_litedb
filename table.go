@@ -12,12 +12,12 @@ type table struct {
 }
 
 func (tab *table) NewDoc(data []byte) int {
-	cache := cacheData(*tab)
+	cache := tab.cacheData()
 
 	cache.Last_Index++
 	id := fmt.Sprintf("[%d]", cache.Last_Index)
 
-	cacheUpdate(*tab, cache)
+	tab.cacheUpdate(cache)
 
 	SaveFile(filepath.Join(tab.path, id), data)
 
@@ -58,6 +58,5 @@ func (tab *table) Docs() []int {
 }
 
 func (tab *table) LastIndex() int {
-	cache := cacheData(*tab)
-	return cache.Last_Index
+	return tab.cacheData().Last_Index
 }
