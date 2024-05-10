@@ -12,12 +12,16 @@ type table struct {
 }
 
 func (tab *table) NewDoc(data []byte) int {
-	new_id := tab.MaxIndex() + 1
-	id := fmt.Sprintf("[%d]", new_id)
+	cache := cacheData(*tab)
+
+	cache.Last_Index++
+	id := fmt.Sprintf("[%d]", cache.Last_Index)
+
+	cacheUpdate(*tab, cache)
 
 	SaveFile(filepath.Join(tab.path, id), data)
 
-	return new_id
+	return cache.Last_Index
 }
 
 func (tab *table) UpdateDoc(id int, data []byte) {
@@ -53,17 +57,7 @@ func (tab *table) Docs() []int {
 	return ids
 }
 
-func (tab *table) MaxIndex() int {
-	dirs := ReadDir(tab.path)
-	max_ind := -1
-
-	for _, dir := range dirs {
-		dir = dir[1 : len(dir)-1]
-		dir_ind, _ := strconv.Atoi(dir)
-		if dir_ind > max_ind {
-			max_ind = dir_ind
-		}
-	}
-
-	return max_ind
+func (tab *table) LastIndex() int {
+	cache := cacheData(*tab)
+	return cache.Last_Index
 }

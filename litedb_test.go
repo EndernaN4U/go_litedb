@@ -32,7 +32,7 @@ func Saving(t *testing.T) {
 }
 
 func Reading(t *testing.T) {
-	last_index := test_table.MaxIndex()
+	last_index := test_table.LastIndex()
 
 	user_data := test_table.Doc(last_index)
 
