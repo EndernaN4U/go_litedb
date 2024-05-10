@@ -7,7 +7,8 @@ import (
 )
 
 type cache struct {
-	Last_Index int `json:"last_index"`
+	Last_Index int    `json:"last_index"`
+	Table_Name string `json:"table_name"`
 }
 
 const (
@@ -19,9 +20,12 @@ func contCacheFile(dir_path string) bool {
 	return err != nil
 }
 
-func createCacheFile(dir_path string) {
+func createCacheFile(dir_path string, tab_name string) {
 	cache_path := filepath.Join(dir_path, cache_file_name)
-	default_cache := cache{Last_Index: 0}
+	default_cache := cache{
+		Last_Index: 0,
+		Table_Name: tab_name,
+	}
 
 	json_cache, _ := json.Marshal(default_cache)
 
