@@ -24,7 +24,7 @@ func createCacheFile(table_path string, tab_name string) {
 	cache_path := filepath.Join(table_path, cache_file_name)
 
 	default_cache := Cache{
-		Last_Index: 0,
+		Last_Index: -1,
 		Table_Name: tab_name,
 	}
 
