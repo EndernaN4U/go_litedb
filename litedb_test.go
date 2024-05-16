@@ -49,7 +49,7 @@ func Reading(t *testing.T) {
 func Filter(t *testing.T) {
 	criteria := []Criterion{
 		{Name: "first_name", Value: "Ben"},
-		{Name: "age", Value: 21.0},
+		{Name: "age", Value: float64(21)},
 	}
 
 	fmt.Println(test_table.Filter(criteria))
