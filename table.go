@@ -43,8 +43,20 @@ func (tab *table) DocPath(id int) string {
 }
 
 func (tab *table) IDs() []string {
-	// TODO: all tab ids with deleted ".cache"
-	return []string{}
+	files, _ := os.ReadDir(tab.path)
+
+	files_names := []string{}
+	for _, file := range files {
+		file_name := file.Name()
+
+		if file_name == ".cache" {
+			continue
+		}
+
+		files_names = append(files_names, file_name)
+	}
+
+	return files_names
 }
 
 func (tab *table) LastIndex() int {
