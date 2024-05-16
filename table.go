@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 )
 
 type table struct {
@@ -31,7 +30,7 @@ func (tab *table) UpdateDoc(id int, data []byte) {
 }
 
 func (tab *table) DeleteDoc(id int) {
-	sid := fmt.Sprintf("[%d]", id)
+	sid := UnID(id)
 
 	os.Remove(filepath.Join(tab.path, sid))
 }
@@ -44,17 +43,11 @@ func (tab *table) Doc(id int) []byte {
 	return data
 }
 
-func (tab *table) Docs() []int {
-	dirs := ReadDir(tab.path)
-	ids := []int{}
+// TODO: add tab doc path
 
-	for _, dir := range dirs {
-		dir = dir[1 : len(dir)-1]
-		dir_ind, _ := strconv.Atoi(dir)
-		ids = append(ids, dir_ind)
-	}
-
-	return ids
+func (tab *table) IDs() []string {
+	// TODO: all tab ids with deleted ".cache"
+	return []string{}
 }
 
 func (tab *table) LastIndex() int {

@@ -2,6 +2,7 @@ package litedb
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -24,6 +25,7 @@ var (
 func TestMain(t *testing.T) {
 	t.Run("Saving", Saving)
 	t.Run("Reading", Reading)
+	t.Run("Filtering", Filter)
 }
 
 func Saving(t *testing.T) {
@@ -42,4 +44,12 @@ func Reading(t *testing.T) {
 	if user_json.Nickname != test_user.Nickname {
 		t.Error("Wrong data!")
 	}
+}
+
+func Filter(t *testing.T) {
+	criteria := []Criterion{
+		{Name: "first_name", Value: "Ben"},
+	}
+
+	fmt.Println(test_table.Filter(criteria))
 }
