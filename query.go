@@ -1,10 +1,10 @@
 package litedb
 
 import (
-	"fmt"
 	"path/filepath"
 )
 
+// Numeric values should be float
 type Criterion struct {
 	Name  string
 	Value any
@@ -13,13 +13,12 @@ type Criterion struct {
 func (tab *table) Filter(criteria []Criterion) []int {
 	res := []int{}
 
-	for _, id := range ReadDir(tab.path) {
+	for _, id := range tab.IDs() {
 		data, _ := OpenFile(filepath.Join(tab.path, id))
 		data_json := BytesToJson[map[string]interface{}](data)
 
 		flag := true
 		for _, criterion := range criteria {
-			fmt.Println(data_json[criterion.Name])
 			if data_json[criterion.Name] != criterion.Value {
 				flag = false
 				break
