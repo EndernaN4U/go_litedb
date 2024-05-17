@@ -2,7 +2,6 @@ package litedb
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 )
 
@@ -51,8 +50,10 @@ func Reading(t *testing.T) {
 func Filter(t *testing.T) {
 	criteria := []Criterion{
 		{Name: "first_name", Value: "Ben"},
-		{Name: "last_name", Value: "Ten"},
+		{Name: "second_name", Value: "Ten"},
 	}
 
-	fmt.Println(test_table.Filter(criteria))
+	if len(test_table.Filter(criteria)) != len(test_table.IDs()) {
+		t.Error("Wrong filter result!")
+	}
 }
