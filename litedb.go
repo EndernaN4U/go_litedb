@@ -16,9 +16,5 @@ func New(dir_path string) LiteDb {
 func (db *LiteDb) Table(table_name string) table {
 	table_path := filepath.Join(db.dir_path, table_name)
 
-	if !contCacheFile(table_path) {
-		createCacheFile(table_path, table_name)
-	}
-
 	return table{path: table_path}
 }

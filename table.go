@@ -9,18 +9,7 @@ type table struct {
 	path string
 }
 
-func (tab *table) NewDoc(data []byte) int {
-	cache := tab.cacheData()
-
-	cache.Last_Index++
-	SaveFile(tab.DocPath(UnID(cache.Last_Index)), data)
-
-	tab.cacheUpdate(cache)
-
-	return cache.Last_Index
-}
-
-func (tab *table) NewDocCrypto(data []byte) string {
+func (tab *table) NewDoc(data []byte) string {
 	uuid := genRandomString(16)
 	SaveFile(tab.DocPath(BrackUUID(uuid)), data)
 
@@ -62,8 +51,4 @@ func (tab *table) IDs() []string {
 	}
 
 	return files_names
-}
-
-func (tab *table) LastIndex() int {
-	return tab.cacheData().Last_Index
 }
