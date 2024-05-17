@@ -20,6 +20,13 @@ func (tab *table) NewDoc(data []byte) int {
 	return cache.Last_Index
 }
 
+func (tab *table) NewDocCrypto(data []byte) string {
+	uuid := genRandomString(16)
+	SaveFile(tab.DocPath(BrackUUID(uuid)), data)
+
+	return uuid
+}
+
 func (tab *table) UpdateDoc(id string, data []byte) {
 	SaveFile(tab.DocPath(id), data)
 }

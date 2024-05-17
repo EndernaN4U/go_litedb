@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 )
 
 type user struct {
@@ -26,7 +27,7 @@ func TestMain(t *testing.T) {
 	// t.Run("Saving", Saving)
 	// t.Run("Reading", Reading)
 	// t.Run("Filtering", Filter)
-	t.Run("Crypto", Crypto)
+	// t.Run("Crypto", Crypto)
 }
 
 func Saving(t *testing.T) {
@@ -61,4 +62,30 @@ func Crypto(t *testing.T) {
 		random_str := genRandomString(i)
 		fmt.Println(i, random_str, len(random_str))
 	}
+}
+
+func TestCompare(t *testing.T) {
+	user_data, _ := json.Marshal(test_user)
+
+	ai_start := time.Now().UnixMilli()
+	table_ai := test_db.Table("table_ai")
+
+	for i := 0; i < 100; i++ {
+		table_ai.NewDoc(user_data)
+	}
+
+	ai_end := time.Now().UnixMilli()
+
+	fmt.Println("ai:", ai_end-ai_start)
+
+	cr_start := time.Now().UnixMilli()
+	table_cr := test_db.Table("table_cr")
+
+	for i := 0; i < 100; i++ {
+		table_cr.NewDocCrypto(user_data)
+	}
+
+	cr_end := time.Now().UnixMilli()
+
+	fmt.Println("cr:", cr_end-cr_start)
 }
