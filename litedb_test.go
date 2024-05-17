@@ -6,10 +6,10 @@ import (
 )
 
 type user struct {
-	First_Name  string `json:"first_name"`
-	Second_Name string `json:"second_name"`
-	Nickname    string `json:"nickname"`
-	Age         int    `json:"age"`
+	First_Name  string  `json:"first_name"`
+	Second_Name string  `json:"second_name"`
+	Nickname    string  `json:"nickname"`
+	Age         float64 `json:"age"`
 }
 
 var (
@@ -23,37 +23,54 @@ var (
 	}
 )
 
-func TestMain(t *testing.T) {
-	t.Run("Saving", Saving)
-	t.Run("Reading", Reading)
-	t.Run("Filtering", Filter)
-}
+func TestAllTabMethods(t *testing.T) {
+	// NewDoc
+	test_user_bytes, _ := json.Marshal(test_user)
+	new_id := test_table.NewDoc(test_user_bytes)
 
-func Saving(t *testing.T) {
-	json_data, _ := json.Marshal(test_user)
-	test_table.NewDoc(json_data)
-}
-
-func Reading(t *testing.T) {
-	tables := test_table.IDs()
-
-	user_data := test_table.Doc(tables[len(tables)-1])
-
-	var user_json user
-	json.Unmarshal(user_data, &user_json)
-
-	if user_json.Nickname != test_user.Nickname {
-		t.Error("Wrong data!")
+	// Doc
+	opened_test_user_data := OpenUser(new_id)
+	if opened_test_user_data.Age != test_user.Age {
+		t.Error("Wrong opened data!")
 	}
-}
 
-func Filter(t *testing.T) {
+	// UpdateDoc
+	test_user.Age++
+	test_user_bytes, _ = json.Marshal(test_user)
+	test_table.UpdateDoc(new_id, test_user_bytes)
+
+	updated_test_user_data := OpenUser(new_id)
+	if updated_test_user_data.Age != test_user.Age {
+		t.Error("Wrong updated opened data!")
+	}
+
+	// DocPath
+	new_doc_path := test_table.DocPath(new_id)
+	if !IsFile(new_doc_path) {
+		t.Error("Doc doesn't exists")
+	}
+
+	// Filter
 	criteria := []Criterion{
 		{Name: "first_name", Value: "Ben"},
 		{Name: "second_name", Value: "Ten"},
+		{Name: "age", Value: float64(22)},
 	}
 
-	if len(test_table.Filter(criteria)) != len(test_table.IDs()) {
-		t.Error("Wrong filter result!")
+	filter_result := test_table.Filter(criteria)
+
+	if len(filter_result) != len(test_table.IDs()) {
+		t.Error("Wrong filter result length")
 	}
+
+	//DeleteDoc
+	test_table.DeleteDoc(new_id)
+	if IsFile(new_doc_path) {
+		t.Error("Doc exists even after delete")
+	}
+
+}
+
+func OpenUser(id string) user {
+	return BytesToJson[user](test_table.Doc(id))
 }

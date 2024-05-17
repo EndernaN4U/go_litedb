@@ -1,6 +1,9 @@
 package litedb
 
-import "os"
+import (
+	"errors"
+	"os"
+)
 
 func OpenFile(file_path string) ([]byte, error) {
 	data, err := os.ReadFile(file_path)
@@ -24,4 +27,9 @@ func ReadDir(path string) []string {
 	}
 
 	return dirs_names
+}
+
+func IsFile(path string) bool {
+	_, err := os.Stat(path)
+	return !errors.Is(err, os.ErrNotExist)
 }

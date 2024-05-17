@@ -10,18 +10,10 @@ type table struct {
 }
 
 func (tab *table) NewDoc(data []byte) string {
-	uuid := genRandomString(16)
-	SaveFile(tab.DocPath(BrackUUID(uuid)), data)
+	uuid := BrackUUID(genRandomString(16))
+	SaveFile(tab.DocPath(uuid), data)
 
 	return uuid
-}
-
-func (tab *table) UpdateDoc(id string, data []byte) {
-	SaveFile(tab.DocPath(id), data)
-}
-
-func (tab *table) DeleteDoc(id string) {
-	os.Remove(filepath.Join(tab.path, id))
 }
 
 func (tab *table) Doc(id string) []byte {
@@ -30,6 +22,14 @@ func (tab *table) Doc(id string) []byte {
 		return nil
 	}
 	return data
+}
+
+func (tab *table) UpdateDoc(id string, data []byte) {
+	SaveFile(tab.DocPath(id), data)
+}
+
+func (tab *table) DeleteDoc(id string) {
+	os.Remove(filepath.Join(tab.path, id))
 }
 
 func (tab *table) DocPath(id string) string {
