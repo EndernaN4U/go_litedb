@@ -10,8 +10,8 @@ type Criterion struct {
 	Value any
 }
 
-func (tab *table) Filter(criteria []Criterion) []int {
-	res := []int{}
+func (tab *table) Filter(criteria []Criterion) []string {
+	res := []string{}
 
 	for _, id := range tab.IDs() {
 		data, _ := OpenFile(filepath.Join(tab.path, id))
@@ -25,7 +25,7 @@ func (tab *table) Filter(criteria []Criterion) []int {
 			}
 		}
 		if flag {
-			res = append(res, DoID(id))
+			res = append(res, id)
 		}
 	}
 

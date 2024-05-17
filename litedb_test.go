@@ -36,7 +36,7 @@ func Saving(t *testing.T) {
 func Reading(t *testing.T) {
 	last_index := test_table.LastIndex()
 
-	user_data := test_table.Doc(last_index)
+	user_data := test_table.Doc(UnID(last_index))
 
 	var user_json user
 	json.Unmarshal(user_data, &user_json)

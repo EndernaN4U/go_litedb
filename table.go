@@ -13,24 +13,22 @@ func (tab *table) NewDoc(data []byte) int {
 	cache := tab.cacheData()
 
 	cache.Last_Index++
-	SaveFile(tab.DocPath(cache.Last_Index), data)
+	SaveFile(tab.DocPath(UnID(cache.Last_Index)), data)
 
 	tab.cacheUpdate(cache)
 
 	return cache.Last_Index
 }
 
-func (tab *table) UpdateDoc(id int, data []byte) {
+func (tab *table) UpdateDoc(id string, data []byte) {
 	SaveFile(tab.DocPath(id), data)
 }
 
-func (tab *table) DeleteDoc(id int) {
-	sid := UnID(id)
-
-	os.Remove(filepath.Join(tab.path, sid))
+func (tab *table) DeleteDoc(id string) {
+	os.Remove(filepath.Join(tab.path, id))
 }
 
-func (tab *table) Doc(id int) []byte {
+func (tab *table) Doc(id string) []byte {
 	data, err := OpenFile(tab.DocPath(id))
 	if err != nil {
 		return nil
@@ -38,8 +36,8 @@ func (tab *table) Doc(id int) []byte {
 	return data
 }
 
-func (tab *table) DocPath(id int) string {
-	return filepath.Join(tab.path, UnID(id))
+func (tab *table) DocPath(id string) string {
+	return filepath.Join(tab.path, id)
 }
 
 func (tab *table) IDs() []string {
