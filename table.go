@@ -47,11 +47,6 @@ func (tab *table) IDs() []string {
 	files_names := []string{}
 	for _, file := range files {
 		file_name := file.Name()
-
-		if file_name == ".cache" {
-			continue
-		}
-
 		files_names = append(files_names, file_name)
 	}
 
