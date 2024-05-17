@@ -8,17 +8,14 @@ type LiteDb struct {
 	dir_path string
 }
 
+// Create new LiteDb instance
 func New(dir_path string) LiteDb {
 	return LiteDb{dir_path: dir_path}
 }
 
-// For less complexity, directory in db should be done before
+// Creates new instance of table object
 func (db *LiteDb) Table(table_name string) table {
 	table_path := filepath.Join(db.dir_path, table_name)
-
-	if !contCacheFile(table_path) {
-		createCacheFile(table_path, table_name)
-	}
 
 	return table{path: table_path}
 }
