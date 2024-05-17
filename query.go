@@ -1,11 +1,12 @@
 package litedb
 
-// Numeric values should be float
+// Criterion for filter operation
 type Criterion struct {
 	Name  string
 	Value any
 }
 
+// Using criteria checks every document and its returning filtered [uuid]s
 func (tab *table) Filter(criteria []Criterion) []string {
 	res := []string{}
 
