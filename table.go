@@ -11,7 +11,15 @@ type table struct {
 
 // Creates new document and returns its [uuid]
 func (tab *table) NewDoc(data []byte) string {
-	uuid := BrackUUID(genRandomString(16))
+	uuid := BrackUUID(genRandomString(18))
+	SaveFile(tab.DocPath(uuid), data)
+
+	return uuid
+}
+
+// Creates new document using custom uuid and returns its [uuid]
+func (tab *table) NewDocUUID(uuid string, data []byte) string {
+	uuid = BrackUUID(uuid)
 	SaveFile(tab.DocPath(uuid), data)
 
 	return uuid
