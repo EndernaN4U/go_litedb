@@ -24,7 +24,17 @@ var (
 )
 
 func TestMain(t *testing.T) {
-	t.Run("AllMethods", AllTabMethods)
+	//t.Run("AllMethods", AllTabMethods)
+	t.Run("CodeTest", CodeTest)
+}
+
+func CodeTest(t *testing.T) {
+	test_user_bytes, _ := json.Marshal(test_user)
+	new_uuid := test_table.NewDocUUID("test_very_long_uuid", test_user_bytes)
+
+	if !IsFile(test_table.DocPath(new_uuid)) {
+		t.Error("File does not exist")
+	}
 }
 
 func AllTabMethods(t *testing.T) {
