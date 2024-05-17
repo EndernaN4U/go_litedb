@@ -23,7 +23,11 @@ var (
 	}
 )
 
-func TestAllTabMethods(t *testing.T) {
+func TestMain(t *testing.T) {
+	t.Run("AllMethods", AllTabMethods)
+}
+
+func AllTabMethods(t *testing.T) {
 	// NewDoc
 	test_user_bytes, _ := json.Marshal(test_user)
 	new_id := test_table.NewDoc(test_user_bytes)
