@@ -23,9 +23,10 @@ var (
 )
 
 func TestMain(t *testing.T) {
-	t.Run("Saving", Saving)
-	t.Run("Reading", Reading)
-	t.Run("Filtering", Filter)
+	// t.Run("Saving", Saving)
+	// t.Run("Reading", Reading)
+	// t.Run("Filtering", Filter)
+	t.Run("Crypto", Crypto)
 }
 
 func Saving(t *testing.T) {
@@ -53,4 +54,11 @@ func Filter(t *testing.T) {
 	}
 
 	fmt.Println(test_table.Filter(criteria))
+}
+
+func Crypto(t *testing.T) {
+	for i := 1; i < 1000; i++ {
+		random_str := genRandomString(i)
+		fmt.Println(i, random_str, len(random_str))
+	}
 }
