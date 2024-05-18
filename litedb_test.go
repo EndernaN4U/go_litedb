@@ -2,6 +2,7 @@ package litedb
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -29,12 +30,12 @@ func TestMain(t *testing.T) {
 }
 
 func CodeTest(t *testing.T) {
-	test_user_bytes, _ := json.Marshal(test_user)
-	new_uuid := test_table.NewDocUUID("test_very_long_uuid", test_user_bytes)
-
-	if !IsFile(test_table.DocPath(new_uuid)) {
-		t.Error("File does not exist")
+	criteria := []Criterion{
+		{Name: "first_name", Value: "Ben"},
 	}
+
+	filter_res := test_table.Filter(criteria)
+	fmt.Println(filter_res)
 }
 
 func AllTabMethods(t *testing.T) {

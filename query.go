@@ -6,9 +6,14 @@ type Criterion struct {
 	Value any
 }
 
+type FilterResult struct {
+	UUID string
+	Data []byte
+}
+
 // Using criteria checks every document and its returning filtered [uuid]s
-func (tab *table) Filter(criteria []Criterion) []string {
-	res := []string{}
+func (tab *table) Filter(criteria []Criterion) []FilterResult {
+	res := []FilterResult{}
 
 	for _, id := range tab.IDs() {
 		data, _ := OpenFile(tab.DocPath(id))
@@ -22,7 +27,7 @@ func (tab *table) Filter(criteria []Criterion) []string {
 			}
 		}
 		if flag {
-			res = append(res, id)
+			res = append(res, FilterResult{UUID: id, Data: data})
 		}
 	}
 
